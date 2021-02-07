@@ -2,68 +2,46 @@ var cat, mouse;
 var backgroundImg, garden;
 var catImg1, catImg2, catImg3;
 var mouseImg1, mouseImg2, mouseImg3;
-
 function preload() {
-    
-    //load the images here
-    // catImg1.loadImage("cat1.png");
-    // catImg2.loadImage("cat2.png");
-    // catImg3.loadImage("cat3.png");
-    // mouseImg1.loadImage("mouse1.png");
-    // mouseImg2.loadImage("mouse2.png");
-    // mouseImg3.loadImage("mouse3.png");
-
-    // backgroundImg.loadImage("garden.png");
-}
-
+  backgroundImg = loadImage("images/garden.png");
+  catImg1= loadAnimation("images/cat1.png");
+  catImg2=loadAnimation("images/cat2.png","images/cat3.png");
+  catImg3= loadAnimation("images/cat4.png");
+  mouseImg1=loadAnimation("images/mouse1.png");
+  mouseImg2= loadAnimation("images/mouse2.png","images/mouse3.png");
+  mouseImg3=loadAnimation("images/mouse4.png"); 
+} 
 function setup(){
-    
-    
-    // garden = createSprite(500,400,1000,1000);
-    // garden.addImage(backgroundImg);
-
-    mouse = createSprite(222,444,50,50);
-    // mouse.addImage(mouseImg1);
-
-    cat = createSprite(100,100,50,50);
-    // cat.addImage(catImg1);
-    
+  createCanvas(1000,800);
+  cat = createSprite(870, 600);
+  cat.addAnimation("tomSleeping", catImg1);
+  cat.scale = 0.2;
+  mouse = createSprite(200, 600);
+  mouse.addAnimation("jerryStanding", mouseImg1);
+  mouse.scale = 0.15; 
 }
-
-function draw() {
-
-    background("black");
-    
-      if(collision(cat, mouse)){
-          cat.velocityX=0;
-      }
-
-    drawSprites();
-}
-
-
-function keyPressed(){
-
-  if(keyCode === LEFT_ARROW){
-     cat.velocityX = -3;
-    //  cat.addImage(catImg2);
-    
-
-
-  }
-
-
-}
-
-function collision(object1, object2){
-    if(object1.x - object2.x < object2.width/2 + object1.width/2
-        && object2.x - object1.x < object2.width/2 + object1.width/2
-        && object1.y - object2.y < object2.height/2 + object1.height/2
-        && object2.y - object1.y < object2.height/2 + object1. height/2){
-            
-            return true;
-        }
-       else{
-         return false;
-       }
+function draw(){
+  background(backgroundImg);
+  //Write condition here to evalute if tom and jerry collide
+  if(cat.x - mouse.x < (cat.width - mouse.width)/2) { 
+    cat.velocityX=0;
+    cat.addAnimation("tomLastImage", catImg3);
+    cat.x =300; cat.scale=0.2;
+    cat.changeAnimation("tomLastImage");
+    mouse.addAnimation("jerryLastImage", mouseImg3);
+    mouse.scale=0.15;
+    mouse.changeAnimation("jerryLastImage");
+  } 
+  drawSprites(); 
+} 
+function keyPressed(){ 
+  //For moving and changing animation write code here 
+  if(keyCode === LEFT_ARROW){ 
+   cat.velocityX = -5;
+   cat.addAnimation("tomRunning", catImg2);
+   cat.changeAnimation("tomRunning");
+   mouse.addAnimation("jerryTeasing", mouseImg2);
+   mouse.frameDelay = 25;
+   mouse.changeAnimation("jerryTeasing"); 
+  } 
 }
